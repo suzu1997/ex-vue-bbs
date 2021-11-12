@@ -17,6 +17,14 @@
         <div>コメント内容：</div>
         <pre>{{ comment.content }}</pre>
       </div>
+      <div>
+        <label for="commentName">名前：</label><br />
+        <input type="text" id="commentName" v-mode;="commentName" /><br />
+        <label for="commentContent">コメント：</label><br />
+        <textarea id="commentContent" v-model="commentContent"></textarea>
+        <br />
+        <button>コメント投稿</button>
+      </div>
     </div>
   </div>
 </template>
@@ -34,6 +42,10 @@ export default class Bbs extends Vue {
   private articleName = "";
   // 投稿内容
   private articleContent = "";
+  // コメント者名
+  private commentName = "";
+  // コメント内容
+  private commentContent = "";
 
   /**
    * 記事一覧を表示する.
