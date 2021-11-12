@@ -20,14 +20,26 @@ export default new Vuex.Store({
       ]),
     ],
   }, // end state
-
-  mutations: {},
+  mutations: {
+    /**
+     * 記事を追加する.
+     *
+     * @remarks 受け取ったpayload内のarticleをstateのarticlesの0番目に追加
+     * @param state - Vuexのstateオブジェクト
+     * @param payload - 新しい記事
+     */
+    addArticle(state, payload) {
+      state.articles.unshift(
+        new Article(payload.id, payload.name, payload.content, payload.comments)
+      );
+    },
+  },
   getters: {
     /**
      * 記事一覧を返す.
      *
      * @param state - Vuexのstateオブジェクト
-     * @returns 記事一覧の情報
+     * @returns 記事一覧
      */
     getArticles(state) {
       return state.articles;

@@ -5,7 +5,7 @@
       <input type="text" id="articleName" v-model="articleName" /><br />
       <label for="articleContent">投稿内容：</label>
       <textarea id="articleContent" v-model="articleContent" />
-      <button v-on="addArticle">記事投稿</button>
+      <button v-on:click="addArticle">記事投稿</button>
     </div>
     <div v-for="article of currentArticleList" :key="article.id">
       <hr />
@@ -25,6 +25,10 @@ import { Component, Vue } from "vue-property-decorator";
 export default class Bbs extends Vue {
   // 現在の記事一覧
   private currentArticleList = [];
+  // 投稿者名
+  private articleName = "";
+  // 投稿内容
+  private articleContent = "";
 
   /**
    * 記事一覧を表示する.
@@ -34,6 +38,19 @@ export default class Bbs extends Vue {
   created(): void {
     this.currentArticleList = this.$store.getters.getArticles;
     console.log(this.currentArticleList);
+  }
+  /**
+   * 記事を追加する.
+   */
+  addArticle(): void {
+    this.$store.commit("addArticle", {
+      id: this.$store.getters.getArticles[0].id + 1,
+      name: this.articleName,
+      content: this.articleContent,
+      comments: [],
+    });
+    this.articleName = "";
+    this.articleContent = "";
   }
 }
 </script>
