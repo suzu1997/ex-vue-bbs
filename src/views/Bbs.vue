@@ -1,5 +1,12 @@
 <template>
   <div class="container">
+    <div>
+      <label for="articleName">投稿者名：</label>
+      <input type="text" id="articleName" v-model="articleName" /><br />
+      <label for="articleContent">投稿内容：</label>
+      <textarea id="articleContent" v-model="articleContent" />
+      <button v-on="addArticle">記事投稿</button>
+    </div>
     <div v-for="article of currentArticleList" :key="article.id">
       <hr />
       <div>投稿者名：{{ article.name }}</div>
