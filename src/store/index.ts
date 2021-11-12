@@ -43,6 +43,7 @@ export default new Vuex.Store({
       const article = state.articles.find(
         (article) => article.id === payload.articleId
       );
+      // 現在のコメントの最大のコメントIDを取得
       let maxCommentId = 0;
       for (const article of state.articles) {
         for (const comment of article.commentList) {
@@ -51,6 +52,7 @@ export default new Vuex.Store({
           }
         }
       }
+      // 最大のコメントIDに1を足したものを新しいコメントIDとする
       const newCommentId = maxCommentId + 1;
       const newComment = new Comment(
         newCommentId,
