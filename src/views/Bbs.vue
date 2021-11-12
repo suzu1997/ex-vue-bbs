@@ -1,5 +1,12 @@
 <template>
-  <div id="app">掲示板画面</div>
+  <div class="container">
+    <div v-for="article of currentArticleList" :key="article.id">
+      <hr />
+      <div>投稿者名：{{ article.name }}</div>
+      <div>投稿内容：</div>
+      <pre>{{ article.content }}</pre>
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -19,7 +26,15 @@ export default class Bbs extends Vue {
    */
   created(): void {
     this.currentArticleList = this.$store.getters.getArticles;
+    console.log(this.currentArticleList);
   }
 }
 </script>
-<style scoped></style>
+<style scoped>
+.container {
+  margin: 0 auto;
+  width: 300px;
+  border: 1px solid black;
+  padding: 5px;
+}
+</style>
