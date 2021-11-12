@@ -66,6 +66,15 @@ export default new Vuex.Store({
         article.commentList.unshift(newComment);
       }
     },
+    /**
+     * 記事を削除する.
+     *
+     * @param state - Vuexのstateオブジェクト
+     * @param payload - 削除する記事のID
+     */
+    deleteArticle(state, payload) {
+      state.articles.splice(payload, 1);
+    },
   },
   getters: {
     /**

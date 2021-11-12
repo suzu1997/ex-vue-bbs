@@ -7,11 +7,15 @@
       <textarea id="articleContent" v-model="articleContent" />
       <button v-on:click="addArticle">記事投稿</button>
     </div>
-    <div v-for="article of currentArticleList" :key="article.id">
+    <div v-for="(article, index) of currentArticleList" :key="article.id">
       <hr />
       <div>投稿者名：{{ article.name }}</div>
       <div>投稿内容：</div>
       <pre>{{ article.content }}</pre>
+      <button class="deleteBtn" v-on:click="deleteArticle(index)">
+        記事削除
+      </button>
+
       <div v-for="comment of article.commentList" :key="comment.id">
         <div>コメント者名：{{ comment.name }}</div>
         <div>コメント内容：</div>
@@ -71,7 +75,7 @@ export default class Bbs extends Vue {
   /**
    * コメントを追加する.
    *
-   * @param articleId - 記事ID
+   * @param articleId - コメントを追加する記事ID
    */
   addComment(articleId: number): void {
     this.$store.commit("addComment", {
@@ -83,6 +87,14 @@ export default class Bbs extends Vue {
     this.commentName = "";
     this.commentContent = "";
   }
+  /**
+   * 記事を削除する.
+   *
+   * @param payload - 削除したい記事のインデックス
+   */
+  deleteArticle(payload: number): void {
+    this.$store.commit("deleteArticle", payload);
+  }
 }
 </script>
 <style scoped>
@@ -91,5 +103,9 @@ export default class Bbs extends Vue {
   width: 300px;
   border: 1px solid black;
   padding: 5px;
+}
+.deleteBtn {
+  margin-bottom: 10px;
+  margin-left: 10px;
 }
 </style>
