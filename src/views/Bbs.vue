@@ -19,11 +19,11 @@
       </div>
       <div>
         <label for="commentName">名前：</label><br />
-        <input type="text" id="commentName" v-mode;="commentName" /><br />
+        <input type="text" id="commentName" v-model="commentName" /><br />
         <label for="commentContent">コメント：</label><br />
         <textarea id="commentContent" v-model="commentContent"></textarea>
         <br />
-        <button>コメント投稿</button>
+        <button v-on:click="addComment(article.id)">コメント投稿</button>
       </div>
     </div>
   </div>
@@ -67,6 +67,21 @@ export default class Bbs extends Vue {
     });
     this.articleName = "";
     this.articleContent = "";
+  }
+  /**
+   * コメントを追加する.
+   *
+   * @param articleId - 記事ID
+   */
+  addComment(articleId: number): void {
+    this.$store.commit("addComment", {
+      id: -1,
+      name: this.commentName,
+      content: this.commentContent,
+      articleId: articleId,
+    });
+    this.commentName = "";
+    this.commentContent = "";
   }
 }
 </script>

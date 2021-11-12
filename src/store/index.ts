@@ -33,6 +33,37 @@ export default new Vuex.Store({
         new Article(payload.id, payload.name, payload.content, payload.comments)
       );
     },
+    /**
+     * コメントを追加する.
+     *
+     * @param state - Vuexのstateオブジェクト
+     * @param payload - 新しいコメント
+     */
+    addComment(state, payload) {
+      const article = state.articles.find(
+        (article) => article.id === payload.articleId
+      );
+      let maxCommentId = 0;
+      for (const article of state.articles) {
+        for (const comment of article.commentList) {
+          if (comment.id > maxCommentId) {
+            maxCommentId = comment.id;
+          }
+        }
+      }
+      const newCommentId = maxCommentId + 1;
+      const newComment = new Comment(
+        newCommentId,
+        payload.name,
+        payload.content,
+        payload.articleId
+      );
+      console.log(newComment);
+
+      if (article) {
+        article.commentList.unshift(newComment);
+      }
+    },
   },
   getters: {
     /**
