@@ -12,6 +12,11 @@
       <div>投稿者名：{{ article.name }}</div>
       <div>投稿内容：</div>
       <pre>{{ article.content }}</pre>
+      <div v-for="comment of article.commentList" :key="comment.id">
+        <div>コメント者名：{{ comment.name }}</div>
+        <div>コメント内容：</div>
+        <pre>{{ comment.content }}</pre>
+      </div>
     </div>
   </div>
 </template>
@@ -37,7 +42,6 @@ export default class Bbs extends Vue {
    */
   created(): void {
     this.currentArticleList = this.$store.getters.getArticles;
-    console.log(this.currentArticleList);
   }
   /**
    * 記事を追加する.
