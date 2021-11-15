@@ -1,8 +1,15 @@
 <template>
   <div class="container">
     <div>
+      <div class="error" v-if="articleNameError">※名前を入力してください</div>
+      <div class="error" v-if="articleNameLengthError">
+        ※名前は50文字以内で入力してください
+      </div>
       <label for="articleName">投稿者名：</label>
       <input type="text" id="articleName" v-model="articleName" /><br />
+      <div class="error" v-if="articleContentError">
+        ※投稿内容を入力してください
+      </div>
       <label for="articleContent">投稿内容：</label>
       <textarea id="articleContent" v-model="articleContent" />
       <button v-on:click="addArticle">記事投稿</button>
@@ -11,7 +18,7 @@
       <hr />
       <div>投稿者名：{{ article.name }}</div>
       <div>投稿内容：</div>
-      <pre>{{ article.content }}</pre>
+      <pre class="content">{{ article.content }}</pre>
       <button class="deleteBtn" v-on:click="deleteArticle(index)">
         記事削除
       </button>
@@ -19,7 +26,7 @@
       <div v-for="comment of article.commentList" :key="comment.id">
         <div>コメント者名：{{ comment.name }}</div>
         <div>コメント内容：</div>
-        <pre>{{ comment.content }}</pre>
+        <pre class="content">{{ comment.content }}</pre>
       </div>
       <CommentInput :article-id="article.id" />
     </div>
@@ -44,10 +51,12 @@ export default class Bbs extends Vue {
   private articleName = "";
   // 投稿内容
   private articleContent = "";
-  // コメント者名
-  private commentNames: Array<string> = [];
-  // コメント内容
-  private commentContents: Array<string> = [];
+  // 投稿者名が入っていないエラー
+  private articleNameError = false;
+  // 投稿者名の文字数エラー
+  private articleNameLengthError = false;
+  // 投稿内容が入っていないエラー
+  private articleContentError = false;
 
   /**
    * 記事一覧を表示する.
@@ -61,6 +70,29 @@ export default class Bbs extends Vue {
    * 記事を追加する.
    */
   addArticle(): void {
+    // 投稿入力のバリデーション
+    if (this.articleName) {
+      this.articleNameError = false;
+    } else {
+      this.articleNameError = true;
+    }
+    if (this.articleContent) {
+      this.articleContentError = false;
+    } else {
+      this.articleContentError = true;
+    }
+    if (this.articleName.length <= 50) {
+      this.articleNameLengthError = false;
+    } else {
+      this.articleNameLengthError = true;
+    }
+    if (
+      this.articleNameError ||
+      this.articleContentError ||
+      this.articleNameLengthError
+    ) {
+      return;
+    }
     this.$store.commit("addArticle", {
       id: this.$store.getters.getArticles[0].id + 1,
       name: this.articleName,
@@ -69,21 +101,6 @@ export default class Bbs extends Vue {
     });
     this.articleName = "";
     this.articleContent = "";
-  }
-  /**
-   * コメントを追加する.
-   *
-   * @param articleId - コメントを追加する記事ID
-   */
-  addComment(articleId: number): void {
-    this.$store.commit("addComment", {
-      id: -1,
-      name: this.commentNames[index],
-      content: this.commentContents[index],
-      articleId: articleId,
-    });
-    this.commentNames[index] = "";
-    this.commentContents[index] = "";
   }
   /**
    * 記事を削除する.
@@ -95,6 +112,7 @@ export default class Bbs extends Vue {
   }
 }
 </script>
+
 <style scoped>
 .container {
   margin: 0 auto;
@@ -105,5 +123,11 @@ export default class Bbs extends Vue {
 .deleteBtn {
   margin-bottom: 10px;
   margin-left: 10px;
+}
+.error {
+  color: red;
+}
+.content {
+  overflow-wrap: break-word;
 }
 </style>
