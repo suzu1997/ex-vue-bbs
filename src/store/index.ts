@@ -40,9 +40,11 @@ export default new Vuex.Store({
      * @param payload - 新しいコメント
      */
     addComment(state, payload) {
+      // コメントを追加する記事を検索
       const article = state.articles.find(
         (article) => article.id === payload.articleId
       );
+
       // 現在のコメントの最大のコメントIDを取得
       let maxCommentId = 0;
       for (const article of state.articles) {
@@ -64,6 +66,8 @@ export default new Vuex.Store({
 
       if (article) {
         article.commentList.unshift(newComment);
+      } else {
+        throw new Error("予期しない記事IDが渡されました");
       }
     },
     /**
