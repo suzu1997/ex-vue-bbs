@@ -93,8 +93,14 @@ export default class Bbs extends Vue {
     ) {
       return;
     }
+    let newId: number;
+    if (this.$store.getters.getArticles.length === 0) {
+      newId = 1;
+    } else {
+      newId = this.$store.getters.getArticles[0].id + 1;
+    }
     this.$store.commit("addArticle", {
-      id: this.$store.getters.getArticles[0].id + 1,
+      id: newId,
       name: this.articleName,
       content: this.articleContent,
       comments: [],
@@ -119,6 +125,7 @@ export default class Bbs extends Vue {
   width: 300px;
   border: 1px solid black;
   padding: 5px;
+  overflow-wrap: break-word;
 }
 .deleteBtn {
   margin-bottom: 10px;
