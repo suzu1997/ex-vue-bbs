@@ -21,31 +21,22 @@
         <div>コメント内容：</div>
         <pre>{{ comment.content }}</pre>
       </div>
-      <div>
-        <label for="commentName">名前：</label><br />
-        <input
-          type="text"
-          id="commentName"
-          v-model="commentNames[index]"
-        /><br />
-        <label for="commentContent">コメント：</label><br />
-        <textarea
-          id="commentContent"
-          v-model="commentContents[index]"
-        ></textarea>
-        <br />
-        <button v-on:click="addComment(article.id, index)">コメント投稿</button>
-      </div>
+      <CommentInput :article-id="article.id" />
     </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import CommentInput from "../components/commentInput.vue";
 
 /**
  * 掲示板画面の表示機能を表すクラスコンポーネント.
  */
-@Component
+@Component({
+  components: {
+    CommentInput,
+  },
+})
 export default class Bbs extends Vue {
   // 現在の記事一覧
   private currentArticleList = [];
